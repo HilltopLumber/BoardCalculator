@@ -1,0 +1,170 @@
+<head>
+  <link rel="stylesheet" href="mystyle.css">
+  <script>
+    function func() {
+      let heightS = document.getElementById("height").value; 
+      let widthS = document.getElementById("width").value; 
+      let baseHeightS = document.getElementById("baseHeight").value; 
+      let boardWidthS = document.getElementById("boardWidth").value; 
+      let boardWasteS = document.getElementById("boardWaste").value; 
+
+      if (!heightS) {
+        heightS = "0";
+      }
+      if (!widthS) {
+        widthS = "0";
+      }
+      if (!baseHeightS) {
+        baseHeightS = "0";
+      }
+      if (!boardWidthS) {
+        boardWidthS = "0";
+      }
+      if (!boardWasteS) {
+        boardWasteS = "0";
+      }
+
+      let height = parseInt(heightS); 
+      let width = parseInt(widthS); 
+      let baseHeight = parseInt(baseHeightS); 
+      let boardWidth = parseInt(boardWidthS); 
+      let boardWaste = parseInt(boardWasteS); 
+      let isHorizontal = document.getElementById("doubleBoardLength").checked; 
+
+      let valid = true;
+      if(height <= 0) {
+        document.getElementById("height").className = "error";
+        valid = false;
+      } else {
+        document.getElementById("height").className = "";
+      }
+      if(width <= 0) {
+        document.getElementById("width").className = "error";
+        valid = false;
+      } else {
+        document.getElementById("width").className = "";
+      }
+      if(boardWidth <= 0) {
+        document.getElementById("boardWidth").className = "error";
+        valid = false;
+      } else {
+        document.getElementById("boardWidth").className = "";
+      }
+      
+      if(!valid) {
+        return;
+      }
+      
+      let ratio = height / width;
+      let boardHeightStart = (ratio * width) + baseHeight + boardWaste;
+      let numberOfBoards = Math.ceil(width / boardWidth);
+      
+      if(isHorizontal) {
+        ratio = width / height;
+        numberOfBoards = Math.ceil(height / boardWidth);
+      }
+      
+      let nextBoard = (ratio * width - boardWidth) + baseHeight + boardWaste;
+      
+      let output = "";
+      let imageOutput = "";
+      let curBoardHeight = 0;
+      let totalLength = 0;
+      let firstBoardLength = 0;
+      
+      for (let i = 0; i < numberOfBoards; i++) {
+        if(isHorizontal) {
+          //curBoardHeight = ratio * (width - (boardWidth * (i * 2)));
+          curBoardHeight = ratio * (height - (boardWidth * i));
+          curBoardHeight = curBoardHeight * 2;
+        } else {
+          curBoardHeight = ratio * (width - (boardWidth * i));
+        }
+        
+        curBoardHeight += baseHeight;
+        curBoardHeight += boardWaste;
+        curBoardHeight = Math.ceil(curBoardHeight);
+        totalLength += curBoardHeight;
+        
+        if(i==0) {
+          firstBoardLength = curBoardHeight;
+        }
+        
+        //output += "Board " + (i + 1) + ": " + (Math.round(curBoardHeight * 100) / 100) + "\"<br>";
+        //output += "Board " + (i + 1) + ": " + Math.ceil(curBoardHeight) + "\"<br>";
+        output += "<tr><td>Board " + (i + 1) + ":</td><td>" + curBoardHeight + "\"</td></tr>";
+        if(isHorizontal) {
+          imageOutput = "<img id=\"boardImageHorizontal\" style=\"margin-left:" + ((firstBoardLength - curBoardHeight) / 2) + ";height:" + boardWidth + "px;width:" + curBoardHeight + "px\" src=\"BoardHorizontal.png\" alt=\"Board\"><br>" + imageOutput;
+        } else {
+          imageOutput += "<img id=\"boardImageVertical\" style=\"height:" + curBoardHeight + "px;width:" + boardWidth + "px\" src=\"BoardVertical.png\" alt=\"Board\">";
+        }
+      }
+
+      let totalCost = totalLength * 0.1;
+      totalCost = Math.round(totalCost * 100) / 100;
+
+      if(isHorizontal) {
+        imageOutput = "<div class=\"boardContainer\">" + imageOutput + "</div>";
+      }
+
+      let tableOutput = "<table class=\"styled-table2\">" + output + "<tfoot><tr><td colspan=2>Total Length: " + (Math.round(totalLength * 100) / 100) + "\"</td></tr></tfoot></table>";
+
+      document.getElementById("output").innerHTML = "<h2 style=\"color:red\">Output</h2>" + tableOutput + imageOutput + "<br><br><span style=\"color:lightgray\">Successfully extracted $" + Math.round(totalCost) + " from your bank account!<br/>Thank you for your business.</span>";
+    }
+    function hideImage() {
+      var x = document.getElementById("infoImage");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+      
+      var b = document.getElementById("showImageBtn");
+      if (b.style.display === "none") {
+        b.style.display = "block";
+      } else {
+        b.style.display = "none";
+      }
+    }
+  </script>
+</head>
+<body class="content" background="Background6.png">
+  <div class="bg"></div>
+  <h1 style="color:blue">Board Calculator</h1>
+  <img id="infoImage" src="BoardCalcInfo2.png" alt="Info" onclick="hideImage()">
+  <button id="showImageBtn" style="display:none" role="button" onclick="hideImage();">Show Info Image</button>
+  <br>
+  <table class="styled-table">
+    <th colspan=2>Input</th>
+    <tr>
+      <td><label for="height">Height (Inches)</label></td>
+      <td><input type="text" id="height" placeholder="0" size="4" />"</td>
+    </tr>
+    <tr>
+      <td><label for="width">Width (Inches)</label></td>
+      <td><input type="text" id="width" placeholder="0" size="4" />"</td>
+    </tr>
+    <tr>
+      <td><label for="baseHeight">Base Height (Inches)</label></td>
+      <td><input type="text" id="baseHeight" placeholder="0" size="4" />"</td>
+    </tr>
+    <tr>
+      <td><label for="boardWidth">Board Width (Inches)</label></td>
+      <td><input type="text" id="boardWidth" placeholder="0" value="6" size="4" />"</td>
+    </tr>
+    <tr>
+      <td><label for="boardWaste">Board Waste (Inches)</label></td>
+      <td><input type="text" id="boardWaste" placeholder="0" size="4" />"</td>
+    </tr>
+    <tr>
+      <td><label for="doubleBoardLength">Horizontal Boards?</label></td>
+      <td><input type="checkbox" id="doubleBoardLength" /></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><button class="button-89" role="button" onclick="func();">Calculate</button></td>
+    </tr>
+  </table>
+  <div id="output"></div>
+</body>
+<footer></footer>
