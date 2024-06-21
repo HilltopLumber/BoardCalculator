@@ -100,6 +100,14 @@
           imageOutput += "<img id=\"boardImageVertical\" style=\"height:" + curBoardHeight + "px;width:" + boardWidth + "px\" src=\"BoardVertical.png\" alt=\"Board\">";
         }
       }
+
+      if(isHorizontal) {
+        imageOutput = "<div class=\"boardContainer\">" + imageOutput + "</div>";
+      }
+
+      let tableOutput = "<table class=\"styled-table2\">" + output + "<tfoot><tr><td colspan=2>Total Length: " + (Math.round(totalLength * 100) / 100) + "\"</td></tr></tfoot></table>";
+
+      document.getElementById("output").innerHTML = "<h2 style=\"color:red\">Output</h2>" + tableOutput + imageOutput + "<br><br>";-->
     }
     function hideImage() {
       var x = document.getElementById("infoImage");
