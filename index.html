@@ -101,13 +101,17 @@
         }
       }
 
+      let totalCost = totalLength * 0.1;
+      totalCost = Math.round(totalCost * 100) / 100;
+
       if(isHorizontal) {
         imageOutput = "<div class=\"boardContainer\">" + imageOutput + "</div>";
       }
 
       let tableOutput = "<table class=\"styled-table2\">" + output + "<tfoot><tr><td colspan=2>Total Length: " + (Math.round(totalLength * 100) / 100) + "\"</td></tr></tfoot></table>";
 
-      document.getElementById("output").innerHTML = "<h2 style=\"color:red\">Output</h2>" + tableOutput + imageOutput + "<br><br>";-->
+      <!--document.getElementById("output").innerHTML = "<h2 style=\"color:red\">Output</h2>" + tableOutput + imageOutput + "<br><br><span style=\"color:lightgray\">Successfully extracted $" + Math.round(totalCost) + " from your bank account!<br/>Thank you for your business.</span>";-->
+      document.getElementById("output").innerHTML = "<h2 style=\"color:red\">Output</h2>" + tableOutput + imageOutput + "<br><br>";
     }
     function hideImage() {
       var x = document.getElementById("infoImage");
